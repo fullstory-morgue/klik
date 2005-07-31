@@ -1,0 +1,91 @@
+#!/bin/sh
+
+# klik client 0.2
+# point-and-klik KDE software installation
+# by probono at myrealbox dot com
+# thanks to bfree for non-KDE part
+
+# NOTE this is a modified version prepared for fullstory
+# NOTE this has received little testing as yet!
+
+# TODO use a common dialog
+# TODO the VERSION must be improvable ... more portable?
+# TODO update wget user agent version
+# TODO get the server to generate the program in a type and place specified by the client
+# e.g. a client can say it wants zisofs or appdir or cramfs and the recipe will build that
+# TODO get the recipe to check that any assumed met dependencies will be?
+# TODO allow setting of default target distro
+
+# CONFIG VAR: klik_target
+
+# try to get the human-readable version of the host OS
+export VERSION=$(cat /etc/*-version 2>/dev/null | head -n 1)
+
+#
+# support different types of dialog, thanks bfree
+#
+
+if [ -z "$DIALOG" ] ; then
+# Determine which dialog to use in which situation:
+# Xdialog (in all other cases)
+DIALOG=Xdialog
+# kdialog (in case there is no console available and we are running KDE)
+( ps -e 2>/dev/null | grep kdeinit >/dev/null 2>&1 ) &&  DIALOG=kdialog 
+# dialog (in case there is a console available)
+GUIMODE=$(tty)
+( echo $GUIMODE | grep /dev/tty[:digit:] >/dev/null ) && DIALOG=dialog
+fi
+
+# Setup defaults for whatever dialog we are using
+case $DIALOG in
+ kdialog)
+ DIALOG_OPTIONS=" --caption klik" ;
+ KLIKDIR=":klikdir" ;;
+ Xdialog|dialog)
+ DIALOG_H=12
+ DIALOG_W=60
+ DIALOG_OPTIONS=" $DIALOG_H $DIALOG_W" ;
+ KLIKDIR="~" ;;
+esac
+
+dmsgbox(){
+ $DIALOG --msgbox "$1" $DIALOG_OPTIONS
+}
+dyesno(){
+ $DIALOG --yesno "$1" $DIALOG_OPTIONS
+}
+dwarningyesno(){
+ case $DIALOG in
+ kdialog)
+  $DIALOG --warningyesno "$1" $DIALOG_OPTIONS 
+ ;;
+ Xdialog|dialog)
+  $DIALOG --yesno "Warning: $1" $DIALOG_OPTIONS 
+ ;;
+ esac
+}
+derror(){
+ case $DIALOG in
+ kdialog)
+ $DIALOG --error "$1" $DIALOG_OPTIONS 
+ ;;
+ Xdialog|dialog)
+ $DIALOG --msgbox "ERROR: $1" $DIALOG_OPTIONS 
+ ;;
+ esac
+}
+dexistingdir(){
+ case $DIALOG in
+ kdialog)
+ $DIALOG --getexistingdirectory $KLIKDIR $DIALOG_OPTIONS 
+ ;;
+ Xdialog)
+ $DIALOG --dselect $KLIKDIR $DIALOG_OPTIONS 
+ ;;
+ dialog)
+ $DIALOG --fselect $KLIKDIR $DIALOG_OPTIONS
+ ;;
+ esac
+}
+
+export RUN=`echo $1 | sed s@klik:\/\/@@` && (wget -q http://klik.atekon.de/apt/?package=$RUN -U "klik/0.1.3cli (`uname -a` @$VERSION@)" -O - | sh || derror "Error while trying to run $RUN" )

@@ -1,0 +1,261 @@
+#!/bin/sh
+
+# by probono at myrealbox dot com
+# thanks to bfree
+# GPL
+
+# NOTE THIS IS A DEVELOPMENT VERSION
+# NOTE IT MAY BE BROKEN!!!
+# NOTE this is a modified version prepared for fullstory
+# NOTE this has received little testing as yet!
+
+# TODO use a common dialog
+# TODO allow to use more loop devices if valid
+# TODO allow to move mount point (done?)
+# TODO allow to set default klikdir
+# TODO rework where it scans by default for cmg files (borrow new code from klik-menu?)
+# TODO is that a bug in the final rm's? should it not rm image not cramfs
+# TODO if it tries to run on a missing cmg, try to find it or get it
+
+FLL_LOOP_DEVICES="8"
+FLL_KLIK_MOUNT="/mnt/app"
+FLL_KLIK_MOUNT_MAKE="Y"
+FLL_KLIK_MOUNT_OWNER="0"
+FLL_KLIK_MOUNT_GROUP="0"
+FLL_KLIK_MOUNT_PERM="0777"
+FLL_LOOP_DEVICES="7"
+
+[ -e /etc/fullstory/fll.conf ] && . /etc/fullstory/fll.conf
+[ -e /etc/klik.conf ] && . /etc/klik.conf
+[ -e $HOME/.klik.conf ] && . $HOME/.klik.conf
+
+#
+# ok we need dialogs now
+#
+if [ -z "$DIALOG" ] ; then
+# Determine which dialog to use in which situation:
+# Xdialog (in all other cases)
+export DIALOG=Xdialog
+# kdialog (in case there is no console available and we are running KDE)
+( ps -e 2>/dev/null | grep kdeinit >/dev/null 2>&1 ) && export DIALOG=kdialog 
+# dialog (in case there is a console available)
+GUIMODE=$(tty)
+( echo $GUIMODE | grep /dev/tty[:digit:] >/dev/null ) && export DIALOG=dialog
+fi
+
+# Setup defaults for whatever dialog we are using
+case $DIALOG in
+ kdialog)
+ DIALOG_OPTIONS=" --caption klik" ;
+ KLIKDIR=":klikdir" ;;
+ Xdialog|dialog)
+ DIALOG_H=12
+ DIALOG_W=60
+ DIALOG_OPTIONS=" $DIALOG_H $DIALOG_W" ;
+ KLIKDIR="~" ;;
+esac
+
+derror(){
+ case $DIALOG in
+ kdialog)
+ $DIALOG --error "$1" $DIALOG_OPTIONS 
+ ;;
+ Xdialog|dialog)
+ $DIALOG --msgbox "ERROR: $1" $DIALOG_OPTIONS 
+ ;;
+ esac
+}
+dmsgbox(){
+ $DIALOG --msgbox "$1" $DIALOG_OPTIONS
+}
+
+# Setup our SU function
+SU="su"
+if [ $UID != 0 ]; then
+  if [ -d /KNOPPIX ]; then
+    SU="sudo"
+  else
+    if [ "$DIALOG" = "kdialog" ]; then
+      if [ -f /usr/bin/kdesu -o -f /usr/kde/3.2/bin/kdesu ]; then
+        SU="kdesu"
+      fi
+    fi
+  fi
+else
+  SU="root"
+fi
+
+mysu(){
+  SUREASON=$1
+  shift
+  _SUCMD=$@
+  case $SU in
+  kdesu)
+  dmsgbox "You will need to supply the root password to $SUREASON"
+  $SU -c "$_SUCMD"
+  ;;
+  su)
+  dmsgbox "You will need to supply the root password to $SUREASON"
+  $SU --command="$_SUCMD"
+  ;;
+  sudo)
+  echo "#!/bin/bash" > klik.install
+  echo "$_SUCMD" >> klik.install 
+  chmod +x klik.install
+  sudo ./klik.install
+  rm klik.install
+  ;;
+  root)
+  $_SUCMD
+  ;;
+  *)
+  derror "I don't know how to become root"
+  ;;
+  esac
+}
+
+# check fstab and warn if neccessary entries are not there
+# better use /media/klik according to FSH?
+#if [ -z "$(cat /etc/fstab | grep $FLL_KLIK_MOUNT/7)" ]
+#then
+#  derror "Your /etc/fstab is not yet prepared for mounting .cmg images. 
+#  As root, please run klik-root-setup"
+#  exit 1
+#fi
+
+# rewrite cmdline to use absolute instead of relative paths, thanks bfree
+NEWCMD=$(perl -e '$newcmd=shift(@ARGV);foreach $arg (@ARGV){ @part=split(/\=/,$arg); foreach $part (@part){ (-e "$ENV{PWD}/$part") && ($part="$ENV{PWD}/$part");}$newcmd.=" ".join ("=",@part);} print "$newcmd";' $@)
+set -- $NEWCMD
+
+# if no arguments are passed and 
+# there is a .cmg in the same directory as this
+# script, then use the .cmg
+DIRNAME=$(dirname $0)
+if [ -z $1 ]
+then
+  CMG=$(find "$DIRNAME" -iname '*.cmg'|head -n 1) || exit 1
+  echo "Found $CMG, using it"
+else
+  CMG="$1"
+  shift
+fi
+
+# make path to CMG absolute, thanks bfree
+case $CMG in
+/*) ;; 
+*) CMG=$(pwd)/$CMG ;; 
+esac
+
+# determine which filesystem is used as .cmg
+file $CMG | grep ": data" >/dev/null && FS=squashfs # who knows a better way to recognize it?
+file $CMG | grep "Compressed ROM" >/dev/null && FS=cramfs
+file $CMG | grep "ISO 9660" >/dev/null && FS=iso9660
+
+if [ -n "$FS" ]
+then
+  NUMBERS="7 6 5 4 3 2 1"
+  for NUMBER in $NUMBERS
+    do
+    [ -e "$FLL_KLIK_MOUNT$NUMBER" ] || MNTNUM=$NUMBER
+  done
+  case $FS in
+    squash) MOUNT=/mnt/squash/$MNTNUM ;;
+    *) MOUNT=$FLL_KLIK_MOUNT$MNTNUM ;;
+  esac
+  # Check /mnt/app exists and is writable
+  if [ ! -w $FLL_KLIK_MOUNT -a "$FLL_KLIK_MOUNT_MAKE" = "Y" ]
+  then
+    if [ ! -d $FLL_KLIK_MOUNT ]
+    then
+      SUDESC="make the $FLL_KLIK_MOUNT directory,"
+      SUCMD="mkdir $FLL_KLIK_MOUNT && chown $FLL_KLIK_MOUNT_OWNER.$FLL_KLIK_MOUNT_GROUP"
+    fi
+    SUDESC="$SUDESC prepare the $FLL_KLIK_MOUNT directory, "
+    if [ -n "$SUCMD" ]
+    then
+      SUCMD="$SUCMD ; "
+    fi
+    SUCMD="$SUCMD chmod $FLL_KLIK_MOUNT_PERM $FLL_KLIK_MOUNT "
+  else
+    derror "making of the klik mount point is disabled either in /etc/klik.conf, $HOME/.klik.conf or /etc/fullstory/fll.conf and you cannot write to $FLL_KLIK_MOUNT."
+  fi
+
+# better use /media/klik according to FSH?
+  if [ -z "$(cat /etc/fstab | grep $FLL_KLIK_MOUNT/7)" ]
+  then
+    SUDESC="$SUDESC prepare /etc/fstab to mount .cmg files."
+    if [ -n "$SUCMD" ]
+    then
+      SUCMD="$SUCMD ; "
+    fi
+    SUCMD="$SUCMD echo \"#Added by klik (klik.atekon.de)\" >> /etc/fstab  "
+    for i in 1 2 3 4 5 6 7; do
+      SUCMD="$SUCMD ; echo \"$FLL_KLIK_MOUNT/$i/image $FLL_KLIK_MOUNT/$i cramfs,iso9660 user,noauto,ro,loop,exec 0 0\" >> /etc/fstab";
+    done
+  fi
+
+  if [ -n "$SUCMD" ]
+  then
+    mysu "$SUDESC" $SUCMD
+  fi
+
+(mkdir -p $MOUNT && ln -s $CMG $MOUNT/image) || (MNTAPP=fail && rmdir $MOUNT >/dev/null 2>/dev/null)
+  if [ -n "$MNTAPP" ]
+  then
+    derror "Klik was unable to make the neccessary changes in /mnt/app.
+Have you (as root) created /mnt/app and made it writable by all klik users?"
+    exit 1
+  fi
+
+  if [ -n "$(cat /etc/fstab | grep $FLL_KLIK_MOUNT/7)" ]
+  then
+    mount $MOUNT
+  else
+    rm $MOUNT/image
+    rmdir $MOUNT
+    derror "Failed to make the changes to /etc/fstab, did you supply the correct password?"
+    exit 1
+  fi
+  if [ ! -x $MOUNT/wrapper ]
+  then
+    rm $MOUNT/image
+    rmdir $MOUNT
+    derror "You seem to be unable to mount .cmg images correctly.
+You can setup your /etc/fstab and $FLL_KLIK_MOUNT directory to allow users to mount .cmg images.
+
+To prepare your fstab:
+As root, please run klik-root-setup."
+    exit 1
+  fi
+else
+  # NOTE: exit now cause our cmg isn't mounted
+  derror "$CMG does not appear to be either a squashfs, iso9660 or a cramfs file"
+  exit 1
+fi
+    
+
+# update the klik menu in the background
+klik-menu $CMG &
+
+#
+# execute the wrapper
+# the wrapper should take care to keep running until its app closes
+#
+
+# we need this so that on the cmdline, pipes etc work
+CMDLINE="yes"
+( tty | grep ^/dev/tty >/dev/null ) && CMDLINE=""
+( tty | grep ^/dev/pts >/dev/null ) && CMDLINE=""
+if [ "$CMDLINE" = "yes" ] ; then
+  RESULT=$($MOUNT/wrapper $@ 2>&1) || error "$RESULT" 
+else
+  $MOUNT/wrapper $@
+fi
+
+# kill all child processes
+kill $(pidof -x -o %PPID) 2>/dev/null
+
+# unmount and clean up
+umount $MOUNT
+rm -f $MOUNT/cramfs
+rm -r $MOUNT/

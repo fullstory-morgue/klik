@@ -1,0 +1,30 @@
+.de URL
+\\$2 \(laURL: \\$1 \(ra\\$3
+..
+.if \n[.g] .mso www.tmac
+.TH klik 1 "31 July 2005" klik
+.SH NAME
+klik \- gets software from klik
+.SH SYNOPSIS
+.B klik
+.I klik://package
+.SH OPTIONS
+You must provide klik with the name of the package you wish to install in the form 
+.B klik klik://package
+where package is the normal debian package name or a package listed on klik.
+.SH DESCRIPTION
+.B klik
+is the tool which takes care of converting one mouse click at 
+.URL "http://klik.atekon.de" "klik"
+into a piece of software you can run.
+.SH EXAMPLES
+To get the xvier package simply enter
+.B klik klik://xvier
+at the command line.
+.SH AUTHORS
+probono@myrealbox.com and niallwalsh@users.berlios.de
+.SH SEE ALSO
+.BR klik-run (1)
+.BR klik-setup (1)
+.BR klik-root-setup (8)
+.BR klik-menu (1)

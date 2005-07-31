@@ -1,0 +1,22 @@
+#!/bin/sh
+
+FLL_KLIK_ELINKS_ENABLE="Y"
+FLL_KLIK_KDE_ENABLE="Y"
+FLL_KLIK_MOZ_ENABLE="Y"
+FLL_KLIK_ROX_ENABLE="Y"
+
+[ -e /etc/klik.conf ] && . /etc/klik.conf
+[ -e $HOME/.klik.conf ] && . $HOME/.klik.conf
+
+if [ "$FLL_KLIK_ELINKS_ENABLE" = "Y" ]; then
+klik-setup-elinks
+fi
+if [ "$FLL_KLIK_KDE_ENABLE" = "Y" ]; then
+klik-setup-kde
+fi
+if [ "$FLL_KLIK_MOZ_ENABLE" = "Y" ]; then
+klik-setup-mozilla
+fi
+if [ "$FLL_KLIK_ROX_ENABLE" = "Y" ]; then
+klik-setup-rox
+fi

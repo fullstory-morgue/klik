@@ -1,0 +1,53 @@
+#!/bin/sh
+##################
+# update klik menu
+
+# NOTE takes the full cmg path as an argument
+# NOTE currently updates the menu to show all cmgs in that dir
+
+# TODO would be nice to extract a desktop template and icon from the cmg
+
+CMG="$1"
+CMGDIR=$(dirname $CMG)
+$DESKDIR="$HOME/.kde/share/applnk/klik/"
+#perl -e -n 'BEGIN{print "'$CMGDIR'\n"}(s/^Exec\=klik\-run\ (.*)\s*$//)&&(print);'
+CMGDIRS=$(grep -h Exec=klik-run $DESKDIR/*.desktop | sed 's/Exec\=klik\-run\W/'| sort -u )
+
+for CMGDIR in $CMGDIRS
+do
+# find cmg files
+  CMGFILES=$(find $CMGDIR -name '*.cmg' 2>/dev/null)
+  for CMGFILE in $CMGFILES
+  do
+    MAKEDESK=""
+    BASENAME=$(basename "$CMGFILE")
+    BASEDESK=$(find $DESKDIR -name '$BASENAME.desktop')
+    if [ -z "$BASEDESK" ]; then
+      # we don't have a desktop for this, so make one
+      MAKEDESK="Y"
+      BASEDESK="$DESKDIR$BASENAME.desktop"
+    else
+      DESKCMG=$(grep -h Exec=klik-run $BASEDESK)
+      if [ ! "$DESKCMG" -eq "$CMGFILE" -a $CMGFILE -nt $DESKCMG ]; then
+      # the desktop points to another cmg
+      # the current found cmg is newer then the desktop version
+        MAKEDESK="Y"
+      fi
+    fi
+    if [ "$MAKEDESK" -eq "Y" ]; then
+      APPNAME=$(echo $BASENAME | sed 's/.cmg//g' | cut -d _ -f 1)
+      firstchar=${APPNAME:0:1}   # First character.
+      restchar=${APPNAME:1}       # Rest of string(s).
+      firstchar=$(echo "$firstchar" | tr a-z A-Z)
+      APPNAME=$firstchar$restchar
+      cat > $BASEDESK <<EOF
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Exec=klik-run $CMGFILE
+Icon=
+Name=$APPNAME
+EOF
+    fi
+  done
+done

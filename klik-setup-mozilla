@@ -1,0 +1,55 @@
+#!/bin/sh
+#
+# set klik protocol handler in Mozilla (tested with Firefox 0.9.3)
+#
+
+# TODO common dialog!
+
+FLL_KLIK_MOZ_ENABLE="Y"
+
+[ -e /etc/klik.conf ] && . /etc/klik.conf
+[ -e $HOME/.klik.conf ] && . $HOME/.klik.conf
+
+if [ "$FLL_KLIK_MOZ_ENABLE" = "Y" ]; then
+
+if [ -z "$DIALOG" ] ; then
+# Determine which dialog to use in which situation:
+# Xdialog (in all other cases)
+DIALOG=Xdialog
+# kdialog (in case there is no console available and we are running KDE)
+( ps -e 2>/dev/null | grep kdeinit >/dev/null 2>&1 ) &&  DIALOG=kdialog 
+# dialog (in case there is a console available)
+GUIMODE=$(tty)
+( echo $GUIMODE | grep /dev/tty[:digit:] >/dev/null ) && DIALOG=dialog
+fi
+
+# Setup defaults for whatever dialog we are using
+case $DIALOG in
+ kdialog)
+ DIALOG_OPTIONS=" --caption klik" ;
+ KLIKDIR=":klikdir" ;;
+ Xdialog|dialog)
+ DIALOG_H=12
+ DIALOG_W=60
+ DIALOG_OPTIONS=" $DIALOG_H $DIALOG_W" ;
+ KLIKDIR="~" ;;
+esac
+
+dmsgbox(){
+ $DIALOG --msgbox "$1" $DIALOG_OPTIONS
+}
+
+PROFILES=$(find $HOME/.mozilla/ | grep prefs.js$)
+if [ -z "$PROFILES" ]
+then
+dmsgbox "You need to start the mozilla/firefox browser once before running the klik installer if you want it to support klik.  If you do not use mozilla/firefox you can ignore this message.  If you plan on using mozilla/firefox with klik please run and exit the browser and then install klik again."
+else
+for i in $PROFILES
+do
+	USERJS="$(dirname "$i")/user.js"
+	( cat $USERJS 2>/dev/null | grep "klik" >/dev/null 2>&1 ) || ( echo "user_pref(\"network.protocol-handler.app.klik\", \"klik\");" >> $USERJS )
+done
+
+( ps -d | grep mozilla ) && dmsgbox "You need to restart Mozilla/Firefox before you will be able to use klik there."
+fi
+fi
