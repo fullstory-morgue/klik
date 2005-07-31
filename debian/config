@@ -1,0 +1,47 @@
+#!/bin/sh
+CONFIGFILE=/etc/klik.conf
+set -e
+. /usr/share/debconf/confmodule
+db_capb backup
+
+if [ -e $CONFIGFILE ]; then
+  . $CONFIGFILE || true
+  dbset fll/klik/fstabenable FLL_KLIK_FSTAB_ENABLE
+  dbset fll/klik/klikgroup FLL_KLIK_MOUNT_GROUP
+  dbset fll/klik/klikusers FLL_KLIK_MOUNT_USERS
+fi
+
+STATE=1
+while true; do
+  case "$STATE" in
+  1)
+    db_input medium fll/klik/fstabenable || true
+  ;;
+#    db_go || true
+  2)
+    db_get fll/klik/rootsetup
+    if [ "$RET" = "true" ]; then
+      db_input medium fll/klik/klikgroup || true
+    fi
+  ;;
+  3)
+    db_get fll/klik/klikgroup
+    if [ "$RET" = "klik" ]; then
+      db_input medium fll/klik/klikusers || true
+    fi
+  ;;
+  *)
+    break
+  ;;
+  esac
+
+  if db_go; then
+    STATE=$(($STATE + 1))
+  else
+    STATE=$(($STATE - 1))
+  fi
+done
+
+if [ $STATE -eq 1 ]; then
+  exit 10
+fi

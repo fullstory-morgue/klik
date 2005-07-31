@@ -1,0 +1,13 @@
+Source: klik
+Section: web
+Priority: optional
+Maintainer: Niall Walsh <niallwalsh@users.berlios.de>
+Build-Depends-Indep: cdbs (>= 0.4.23-1.1), build-essential, debhelper (>= 4.1.0)
+Standards-Version: 3.6.2
+
+Package: klik
+Architecture: all
+Recommends: konqueror|mozilla-browser|mozilla-firefox|elinks,kdialog|xdialog|dialog,wget
+Description: Web based software installer
+ This package provides all the client programs needed to use the
+ http://klik.atkon.de site to run software.
