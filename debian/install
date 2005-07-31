@@ -6,4 +6,5 @@ klik-setup usr/bin
 klik-setup-kde usr/bin
 klik-setup-mozilla usr/bin
 klik-setup-elinks usr/bin
+klik-setup-rox usr/bin
 
