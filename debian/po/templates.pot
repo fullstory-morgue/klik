@@ -1,0 +1,111 @@
+#
+#    Translators, if you are not familiar with the PO format, gettext
+#    documentation is worth reading, especially sections dedicated to
+#    this format, e.g. by running:
+#         info -n '(gettext)PO Files'
+#         info -n '(gettext)Header Entry'
+#
+#    Some information specific to po-debconf are available at
+#            /usr/share/doc/po-debconf/README-trans
+#         or http://www.debian.org/intl/l10n/po-debconf/README-trans
+#
+#    Developers do not need to manually edit POT or PO files.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-07-31 20:48+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: boolean
+#. Description
+#: ../templates:4
+msgid "Setup user mounting of klik images?"
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../templates:4
+msgid ""
+"Klik defaults to using a compressed image file to store each application you "
+"get in one file. To allow users to run applications in this way, the root "
+"user must setup /etc/fstab and create a directory (normally /mnt/app)."
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../templates:4
+msgid ""
+"If you wish to perform these steps you can run klik-root-setup as root at "
+"any time."
+msgstr ""
+
+#. Type: string
+#. Default
+#: ../templates:15
+msgid "klik"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../templates:16
+msgid "Group for klik users:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../templates:16
+msgid ""
+"You can limit access to mounting klik's compressed images to any system "
+"group.  The default of option of klik will create a new group called klik, "
+"providing one does not already exist.   Choosing klik will also allow you to "
+"add users you wish to that group now."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../templates:16
+msgid ""
+"If you enter \"none\", then only root will have access to use klik.  If you "
+"enter \"all\", any user will be able to use kliks compressed images.  If you "
+"enter your own, non-root, username then only you will be able to use the "
+"mount points."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../templates:16
+msgid ""
+"It is worth noting that klik can simply be used by any user irrespectively "
+"by using directories rather then compressed images to store applications."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../templates:32
+msgid "Users (comma seperated) to place in klik group:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../templates:32
+msgid ""
+"You can choose to place as many users as you wish in the klik group.  Enter "
+"them as a comma seperated list."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../templates:32
+msgid ""
+"This group simply controls who can access (write) to /mnt/app, and hence "
+"control mounting of kliks compressed image files to run their own "
+"applications."
+msgstr ""

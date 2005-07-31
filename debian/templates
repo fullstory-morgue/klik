@@ -1,25 +1,38 @@
 Template: fll/klik/fstabenable
 Type: boolean
 Default: true
-Description: Setup user mounting of klik images?
- Klik defaults to using a compressed image file to store each application you get in one file.
- To allow users to run applications in this way, the root user must setup /etc/fstab and create a directory (normally /mnt/app).
+_Description: Setup user mounting of klik images?
+ Klik defaults to using a compressed image file to store each application
+ you get in one file. To allow users to run applications in this way, the
+ root user must setup /etc/fstab and create a directory (normally
+ /mnt/app).
  .
- If you wish to perform these steps you can run klik-root-setup as root at any time.
+ If you wish to perform these steps you can run klik-root-setup as root at
+ any time.
 
 Template: fll/klik/klikgroup
 Type: string
-Default: klik
-Description: Group for klik users:
- You can limit access to mounting klik's compressed images to any system group.  The default of option of klik will create a new group called klik, providing one does not already exist.   Choosing klik will also allow you to add users you wish to that group now.
+_Default: klik
+_Description: Group for klik users:
+ You can limit access to mounting klik's compressed images to any system
+ group.  The default of option of klik will create a new group called klik,
+ providing one does not already exist.   Choosing klik will also allow you
+ to add users you wish to that group now.
  .
- If you enter "none", then only root will have access to use klik.  If you enter "all", any user will be able to use kliks compressed images.  If you enter your own, non-root, username then only you will be able to use the mount points.
+ If you enter "none", then only root will have access to use klik.  If you
+ enter "all", any user will be able to use kliks compressed images.  If you
+ enter your own, non-root, username then only you will be able to use the
+ mount points.
  .
- It is worth noting that klik can simply be used by any user irrespectively by using directories rather then compressed images to store applications.
+ It is worth noting that klik can simply be used by any user irrespectively
+ by using directories rather then compressed images to store applications.
 
 Template: fll/klik/klikusers
 Type: string
-Description: Users (comma seperated) to place in klik group:
- You can choose to place as many users as you wish in the klik group.  Enter them as a comma seperated list.
+_Description: Users (comma seperated) to place in klik group:
+ You can choose to place as many users as you wish in the klik group. 
+ Enter them as a comma seperated list.
  .
- This group simply controls who can access (write) to /mnt/app, and hence control mounting of kliks compressed image files to run their own applications.
+ This group simply controls who can access (write) to /mnt/app, and hence
+ control mounting of kliks compressed image files to run their own
+ applications.
