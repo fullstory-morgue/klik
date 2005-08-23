@@ -9,7 +9,8 @@
 
 CMG="$1"
 CMGDIR=$(dirname $CMG)
-$DESKDIR="$HOME/.kde/share/applnk/klik/"
+[ -z "$KDEHOME" ] && ([ -d "$HOME/.kde" ] && KDEHOME="$HOME/.kde")||exit
+$DESKDIR="$KDEHOME/share/applnk/klik/"
 #perl -e -n 'BEGIN{print "'$CMGDIR'\n"}(s/^Exec\=klik\-run\ (.*)\s*$//)&&(print);'
 CMGDIRS=$(grep -h Exec=klik-run $DESKDIR/*.desktop | sed 's/Exec\=klik\-run\W/'| sort -u )
 

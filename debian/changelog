@@ -1,6 +1,11 @@
 klik (0.6-1) unstable; urgency=low
 
-  * Initial release
+  * NOT RELEASED
+  * PLEASE READ and/or TEST ONLY, DO NOT DEPLOY!
+  * Use KDEHOME instead of $HOME/.kde if present
+  * Report /etc/*-release if no /etc/*-version (suse anyway)
+  * Split into more files (may revert)
+  * Add initial support for config files
 
- -- Niall Walsh <niallwalsh@users.berlios.de>  Sat, 30 Jul 2005 23:06:10 +0100
+ -- Niall Walsh <niallwalsh@users.berlios.de>  Tue, 23 Aug 2005 21:38:50 +0100
 

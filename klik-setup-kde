@@ -5,12 +5,16 @@
 
 FLL_KLIK_KDE_ENABLE="Y"
 
+[ -z "$KDEHOME" ] && [ -d "$HOME/.kde" ] && KDEHOME="$HOME/.kde"
+
 [ -e /etc/klik.conf ] && . /etc/klik.conf
 [ -e $HOME/.klik.conf ] && . $HOME/.klik.conf
 
+[ -z "$KDEHOME" ] && exit
+
 if [ "$FLL_KLIK_KDE_ENABLE" = "Y" ]; then
 
-cat > $HOME/.kde/share/services/klik.protocol <<EOF
+cat > $KDEHOME/share/services/klik.protocol <<EOF
 # klik 0.2
 # helper protocol for konqueror to send klicks to the klik script
 # by probono
@@ -30,12 +34,12 @@ Description=klik
 EOF
 
 #
-# create ~/.kde/share/applnk/klik
+# create $KDEHOME/share/applnk/klik
 #
 
-mkdir -p  $HOME/.kde/share/applnk/klik
+mkdir -p  $KDEHOME/share/applnk/klik
 
-cat > $HOME/.kde/share/applnk/klik/.directory <<EOF
+cat > $KDEHOME/share/applnk/klik/.directory <<EOF
 [Desktop Entry]
 Encoding=UTF-8
 Name=Applications (installed by klik)
@@ -48,7 +52,7 @@ EOF
 # link to the store
 #
 
-cat > $HOME/.kde/share/applnk/klik/klik.desktop <<EOF
+cat > $KDEHOME/share/applnk/klik/klik.desktop <<EOF
 [Desktop Entry]
 Encoding=UTF-8
 Exec=konqueror http://klik.atekon.de?from=profile
@@ -57,8 +61,8 @@ Name=Install more software...
 Name[de]=Weitere Software installieren...
 EOF
 
-mkdir -p $HOME/.kde/share/mimelnk/all
-cat > $HOME/.kde/share/mimelnk/all/cmg.desktop <<\EOF
+mkdir -p $KDEHOME/share/mimelnk/all
+cat > $KDEHOME/share/mimelnk/all/cmg.desktop <<\EOF
 [Desktop Entry]
 Comment=
 Hidden=false
@@ -68,8 +72,8 @@ Patterns=*.cmg
 Type=MimeType
 EOF
 
-mkdir -p $HOME/.kde/share/applnk/.hidden
-cat > $HOME/.kde/share/applnk/.hidden/AppRun.desktop<<\EOF
+mkdir -p $KDEHOME/share/applnk/.hidden
+cat > $KDEHOME/share/applnk/.hidden/AppRun.desktop<<\EOF
 [Desktop Entry]
 Comment=
 Exec=klik-run %U

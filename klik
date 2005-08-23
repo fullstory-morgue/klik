@@ -19,7 +19,9 @@
 # CONFIG VAR: klik_target
 
 # try to get the human-readable version of the host OS
-export VERSION=$(cat /etc/*-version 2>/dev/null | head -n 1)
+VERSION=$(cat /etc/*-version 2>/dev/null | head -n 1)
+[ -z "$VERSION" ] && VERSION=$(cat /etc/*-release 2>/dev/null | head -n 1)
+export VERSION
 
 #
 # support different types of dialog, thanks bfree
