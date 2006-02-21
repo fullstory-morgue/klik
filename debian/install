@@ -1,5 +1,6 @@
 klik usr/bin
 zAppRun usr/bin
+klik-setup-fstab usr/share/doc/klik/setup
 klik-setup-elinks usr/share/doc/klik/setup
 klik-setup-gnome usr/share/doc/klik/setup
 klik-setup-kde usr/share/doc/klik/setup
