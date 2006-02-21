@@ -1,17 +1,9 @@
-#!/bin/sh
 #
 # Add support for the klik protocol to elinks
 #
-
-FLL_KLIK_ELINKS_ENABLE="Y"
-
-[ -e /etc/klik.conf ] && . /etc/klik.conf
-[ -e $HOME/.klik.conf ] && . $HOME/.klik.conf
-
-if [ "$FLL_KLIK_ELINKS_ENABLE" = "Y" ]; then
-[ -e $HOME/.elinks ] || mkdir $HOME/.elinks
+[ -e $HOME/.elinks ] || mkdir -p $HOME/.elinks
 [ -e $HOME/.elinks/elinks.conf ] || touch $HOME/.elinks/elinks.conf
-grep klik $HOME/.elinks/elinks.conf >/dev/null && cat >> $HOME/.elinks/elinks.conf <<EOF
+cat >> $HOME/.elinks/elinks.conf <<EOF
 
 ## protocol
 ## protocol.user 
@@ -19,8 +11,7 @@ grep klik $HOME/.elinks/elinks.conf >/dev/null && cat >> $HOME/.elinks/elinks.co
 ## protocol.user.klik._template_ <str> 
 set protocol.user.klik._template_ = "" 
 ## protocol.user.klik.unix <str> 
-set protocol.user.klik.unix = "klik-run %h" 
+set protocol.user.klik.unix = "klik %h" 
 ## protocol.user.klik.unix-xwin <str> 
-set protocol.user.klik.unix-xwin = "klik-run %h"
+set protocol.user.klik.unix-xwin = "klik %h"
 EOF
-fi

@@ -1,10 +1,6 @@
 klik usr/bin
-klik-root-setup usr/sbin
-klik-run usr/bin
-klik-menu usr/bin
-klik-setup usr/bin
-klik-setup-kde usr/bin
-klik-setup-mozilla usr/bin
-klik-setup-elinks usr/bin
-klik-setup-rox usr/bin
-
+zAppRun usr/bin
+klik-setup-elinks usr/share/doc/klik/setup
+klik-setup-gnome usr/share/doc/klik/setup
+klik-setup-kde usr/share/doc/klik/setup
+klik-setup-mozilla usr/share/doc/klik/setup

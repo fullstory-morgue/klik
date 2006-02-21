@@ -1,20 +1,7 @@
-#!/bin/sh
-#
-# create helper protocol for konqueror to send klicks to the klik script
-#
+[ x"$KDEHOME" = x ] && KDEHOME=$HOME/.kde
 
-FLL_KLIK_KDE_ENABLE="Y"
-
-[ -z "$KDEHOME" ] && [ -d "$HOME/.kde" ] && KDEHOME="$HOME/.kde"
-
-[ -e /etc/klik.conf ] && . /etc/klik.conf
-[ -e $HOME/.klik.conf ] && . $HOME/.klik.conf
-
-[ -z "$KDEHOME" ] && exit
-
-if [ "$FLL_KLIK_KDE_ENABLE" = "Y" ]; then
-
-cat > $KDEHOME/share/services/klik.protocol <<EOF
+mkdir -p $KDEHOME/share/services/
+cat > ${KDEHOME}/share/services/klik.protocol <<EOF
 # klik 0.2
 # helper protocol for konqueror to send klicks to the klik script
 # by probono
@@ -34,12 +21,12 @@ Description=klik
 EOF
 
 #
-# create $KDEHOME/share/applnk/klik
+# create ~/.kde/share/applnk/klik
 #
 
-mkdir -p  $KDEHOME/share/applnk/klik
+mkdir -p  ${KDEHOME}/share/applnk/klik
 
-cat > $KDEHOME/share/applnk/klik/.directory <<EOF
+cat > ${KDEHOME}/share/applnk/klik/.directory <<EOF
 [Desktop Entry]
 Encoding=UTF-8
 Name=Applications (installed by klik)
@@ -52,7 +39,7 @@ EOF
 # link to the store
 #
 
-cat > $KDEHOME/share/applnk/klik/klik.desktop <<EOF
+cat > ${KDEHOME}/share/applnk/klik/klik.desktop <<EOF
 [Desktop Entry]
 Encoding=UTF-8
 Exec=konqueror http://klik.atekon.de?from=profile
@@ -61,25 +48,53 @@ Name=Install more software...
 Name[de]=Weitere Software installieren...
 EOF
 
-mkdir -p $KDEHOME/share/mimelnk/all
-cat > $KDEHOME/share/mimelnk/all/cmg.desktop <<\EOF
+mkdir -p ${KDEHOME}/share/mimelnk/application
+cat > ${KDEHOME}/share/mimelnk/application/cmg.desktop <<\EOF
 [Desktop Entry]
 Comment=
 Hidden=false
 Icon=view_remove
-MimeType=all/cmg
+MimeType=application/x-extension-cmg
 Patterns=*.cmg
 Type=MimeType
+ServiceTypes=ThumbCreator
+X-KDE-Library=cmg-thumbnail
+CacheThumbnail=false
 EOF
 
-mkdir -p $KDEHOME/share/applnk/.hidden
-cat > $KDEHOME/share/applnk/.hidden/AppRun.desktop<<\EOF
+mkdir -p ${KDEHOME}/share/services/
+cat > ${KDEHOME}/share/services/cmg.desktop<<\EOF
+[Desktop Entry]
+Encoding=UTF-8
+Type=Service
+Name=CMG
+ServiceTypes=ThumbCreator
+MimeTypes=application/x-extension-cmg
+X-KDE-Library=cmg-thumbnail
+CacheThumbnail=false
+EOF
+
+# install cmg-thumbnail libaries
+mkdir -p ${KDEHOME}/lib/kde3/
+cd ${KDEHOME}/lib/kde3/
+wget klik.atekon.de/download/cmg-thumbnail.tgz
+tar xfvz cmg-thumbnail.tgz
+rm -rf cmg-thumbnail.tgz
+cd -
+
+### MIGHT BE NECCESSARY TO DO SOMETHING LIKE
+### ln -s /usr/lib/libaudiofile.so.0 /usr/lib/kde3/libaudio.so.2
+
+
+
+mkdir -p ${KDEHOME}/share/applnk/.hidden
+cat > ${KDEHOME}/share/applnk/.hidden/AppRun.desktop<<\EOF
 [Desktop Entry]
 Comment=
-Exec=klik-run %U
+Exec=zAppRun %U
 Icon=view_remove
 InitialPreference=2
-MimeType=all/cmg;Application
+MimeType=application/x-extension-cmg;Application
 Name=
 ServiceTypes=
 Terminal=false
@@ -87,5 +102,3 @@ Type=Application
 EOF
 
 kbuildsycoca 2>/dev/null
-
-fi

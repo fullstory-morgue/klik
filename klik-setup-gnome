@@ -1,0 +1,238 @@
+#
+# GNOME support for cmg - added by probono Aug 21, 2005
+#
+
+# how to make $HOME variable here?
+mkdir -p $HOME/.local/share/applications/
+cat > $HOME/.local/share/applications/zAppRun.desktop << EOF
+[Desktop Entry]
+Encoding=UTF-8
+Name=zAppRun
+MimeType=application/x-extension-cmg;
+Exec='zAppRun'
+Type=Application
+Terminal=false
+NoDisplay=true
+EOF
+
+mkdir -p $HOME/.local/share/mime/packages/
+cat > $HOME/.local/share/mime/packages/Override.xml << EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+ <mime-type type="application/x-extension-cmg"><comment>Compressed Application Image</comment><glob pattern="*.cmg"/></mime-type>
+</mime-info>
+EOF
+
+update-mime-database ~/.local/share/mime/ >/dev/null  2>&1
+update-desktop-database -v ~/.local/share/applications/ >/dev/null 2>&1
+
+mkdir -p $HOME/.local/share/applications $HOME/.gnome2/vfolders/applications  2>/dev/null
+ ln -sf $KDEHOME/share/applnk/klik $HOME/.local/share/applications 2>/dev/null
+ ln -s $KDEHOME/share/applnk/klik $HOME/.gnome2/vfolders/applications 2>/dev/null
+
+#!/bin/bash
+#
+# GNOME support for cmg thumbnails
+#
+
+
+# Install thumbnailer code
+cat > $HOME/.cmg-gnome-thumbnailer.py << EOF
+#! /usr/bin/python
+
+"""
+ Klik CMG Thumbnailer 
+ Created by : Jason Taylor (KillerKiwi)
+ Created on : 26-Sep-2005
+ Last Update : 11-Oct-2005
+ Last Update By : Jason Taylor (KillerKiwi)
+
+ Comments :	This is my first python script :)
+		Need to read file from the end 
+		This is all we need for gnome
+
+
+ UPDATE: probono has spoken ;) the ar file format will be used script updated to scan for ar file 
+		and extract given file.
+		Note: Scanning for the ar like this is not ideal and should be dropped at some point
+		- Jason Taylor 28-Sep-2005
+
+
+ AR File header format:
+
+       char    ar_name[16];      /* 16 - '/' terminated file member name (FileName) */  
+       char    ar_date[12];      /* 28 - file member date */ 
+       char    ar_uid[6];        /* 34 - file member user identification */ 
+       char    ar_gid[6];        /* 40 - file member group identification */ 
+       char    ar_mode[8];       /* 48 - file member mode (octal) */ 
+       char    ar_size[10];      /* 58 - file member size (FileSize) */ 
+       char    ar_fmag[2];       /* 60 - header trailer string */ 
+
+"""
+
+ICON_FILE_NAME = "icon"
+AR_MAGIC = "!<arch>\n"
+BLKSIZE = 10000
+MAXCYCLES = 1000
+
+import getopt 
+import sys
+import os
+import string
+import StringIO
+#import Image, ImageDraw # Try images
+from Numeric import *
+
+def FindAr( file ):
+	
+	buffer = ""
+
+	# Set pointer to end of file
+	file.seek(0, 2)
+
+	# Seek backwards for a number of cycles
+	for i in range( MAXCYCLES ):
+
+		try:
+
+			pos = file.tell()
+			offset = BLKSIZE
+
+			# Check for valid position
+			if pos - BLKSIZE < 0: 
+				offset = pos;
+			if offset < 0:
+				return 0;
+
+			# Move pointer
+			file.seek( -offset, 1)
+
+		        # Get new chunk to buffer 
+			buffer = file.read(offset + len(AR_MAGIC)) 
+			
+			# Move pointer back, read moves pointer on
+			file.seek( -len(buffer), 1)	
+
+			# Test for divider
+			test = buffer.rfind( AR_MAGIC )
+
+			# If divider is found
+			if test > -1:
+				file.seek(  test + len( AR_MAGIC ) ,1)
+				print "Found an AR archive : " 
+				print pos
+				return 1
+
+		except: 
+			print "No Ar Found"
+			return 0
+
+		
+	print "No Ar Found"
+	return 0
+
+def ExtractFile(file, filename):
+	try:
+		ar_file_detail = file.readline()
+		file_name_chunk = ar_file_detail[0:16].strip()
+		file_size_chunk = ar_file_detail[48:58].strip()
+		
+		# Strip trailing char in filename
+		file_name = file_name_chunk[:len(file_name_chunk)-1]
+		# Convert string to number
+		file_size = int(file_size_chunk)
+
+		print "Found a file : " + file_name +" (" + file_size_chunk +" bytes)"
+
+		if file_name == filename:
+
+			buffer = file.read( file_size )
+			print "Found The Correct File!  Extracting..."
+			return buffer
+
+		# Skip to next file and test
+		file.seek( file_size, 1)
+		return ExtractFile(file, filename)
+	except:
+		print "Error occured while reading ar"
+		return 
+
+def GetFileFromAr( ar, filename):
+	file = open( ar, "r" )
+	result = FindAr( file )
+	#file.seek( 140, 1)
+	if result == 1:
+		return ExtractFile( file, filename )
+	return None
+
+def main():
+	input = sys.argv[1]
+	output = sys.argv[2]
+
+	buffer = GetFileFromAr( input, ICON_FILE_NAME )
+
+	if buffer != None:
+		file = open( output , "w")
+		file.write( buffer )
+		file.close()
+				
+		del file
+
+if __name__ == "__main__":
+	main()
+EOF
+
+# Mime magic will insure correct identification
+mkdir -p $HOME/.local/share/mime/packages/
+cat > $HOME/.local/share/mime/packages/klik-app.xml << EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+	<mime-type type="application/x-extension-cmg">
+		<comment>Klik CMG File TESTING</comment>
+		<glob pattern="*.cmg"/>
+	</mime-type>
+</mime-info>
+EOF
+
+# Gnome Thumbnailer
+cat > $HOME/.klik-gnome-thumbnail.schema << EOF
+<gconfschemafile>
+    <schemalist>
+
+        <schema>
+            <key>/schemas/desktop/gnome/thumbnailers/application@x-extension-cmg/enable</key>
+            <applyto>/desktop/gnome/thumbnailers/application@x-extension-cmg/enable</applyto>
+            <owner>Thumbnailer</owner>
+            <type>bool</type>
+            <default>true</default>
+            <locale name="C">
+                <short>Enable thumbnailing of klik cmg</short>
+                <long>Enable thumbnailing of klik cmg</long>
+            </locale>
+        </schema>
+
+        <schema>
+            <key>/schemas/desktop/gnome/thumbnailers/application@x-extension-cmg/command</key>
+            <applyto>/desktop/gnome/thumbnailers/application@x-extension-cmg/command</applyto>
+            <owner>Thumbnailer</owner>
+            <type>string</type>
+            <default>python $HOME/.cmg-gnome-thumbnailer.py %i %o</default>
+            <locale name="C">
+                <short>Create thumbnail for klik cmg</short>
+                <long>Create thumbnail for klik cmg</long>
+            </locale>
+        </schema>
+
+    </schemalist>
+</gconfschemafile>
+
+EOF
+
+# Install
+echo "   -  Instaling GNOME Mime Data "
+env GCONF_CONFIG_SOURCE="" gconftool-2 --makefile-install-rule $HOME/.klik-gnome-thumbnail.schema >/dev/null
+rm $HOME/.klik-gnome-thumbnail.schema >/dev/null
+update-mime-database ~/.local/share/mime/ >/dev/null 
+update-desktop-database -v ~/.local/share/applications/ >/dev/null 
+
+echo "Done"

@@ -1,0 +1,125 @@
+#!/bin/bash
+
+# by probono at myrealbox dot com
+# thanks to bfree
+# GPL
+
+. ssft.sh
+[ -n "$SSFT_FRONTEND" ] || SSFT_FRONTEND="$( ssft_choose_frontend )"
+
+derror(){
+ ssft_display_error "klik zAppRun Error" "$1"
+}
+
+# rewrite cmdline to use absolute instead of relative paths, thanks bfree
+NEWCMD=$(perl -e '$newcmd=shift(@ARGV);foreach $arg (@ARGV){ @part=split(/\=/,$arg); foreach $part (@part){ (-e "$ENV{PWD}/$part") && ($part="$ENV{PWD}/$part");}$newcmd.=" ".join ("=",@part);} print "$newcmd";' $@)
+set -- $NEWCMD
+
+# if no arguments are passed and 
+# there is a .cmg in the same directory as this
+# script, then use the .cmg
+DIRNAME=$(dirname $0)
+if [ -z $1 ]
+then
+  CMG=$(find "$DIRNAME" -iname '*.cmg'|head -n 1) || exit 1
+#  echo "Found $CMG, using it"
+else
+  CMG="$1"
+  shift
+fi
+
+# make path to CMG absolute, thanks bfree
+case $CMG in
+/*) ;; 
+*) CMG=$(pwd)/$CMG ;; 
+esac
+
+# determine which filesystem is used as .cmg
+#[ "$(head --bytes=4 $CMG)" = "sqsh" ] && FS="squashfs"
+[ "$(head --bytes=4 $CMG)" = "E=Í(" ] && FS="cramfs" && [ -n "$(which fusecram)" ] && FUSE="fusecram"
+[ "$(head --bytes=32774 $CMG | tail --bytes=5)" = "CD001" ] && FS="iso9660" && [ -n "$(which fuseiso)" ] && FUSE="fuseiso"
+
+
+if [ -n "$FUSE" ]
+then
+  MOUNT=""
+  if [ -n "$FUSE" ]
+  then
+    SAFEFUSE="$FUSE"
+    FUSEMNT="$HOME/.fuse/$(basename $CMG)"
+    # make mount point and use fuse to mount it
+    mkdir -p $FUSEMNT
+    $FUSE $CMG $FUSEMNT || FUSE=""
+    if [ -x "$FUSEMNT/wrapper" ]
+    then
+      MOUNT="$FUSEMNT"
+    else
+      if [ -z "$FUSE" ]
+      then
+        fusermount -u $FUSEMNT
+	derror "Sorry but your $CMG does not seem to be a valid cmg file."
+      else
+        derror "Sorry but your Fuse mount (by $SAFEFUSE) failed."
+      fi
+      rmdir $FUSEMNT
+      exit 1
+    fi
+  fi
+else
+  derror "$CMG does not appear to be either a iso9660 or a cramfs file or you do not have the appropriate fuse program available to mount $FS"
+  exit 1
+fi
+    
+  #
+  # execute the wrapper
+  # the wrapper should take care to keep running until its app closes
+  #
+  
+  # we need this so that on the cmdline, pipes etc work
+  CMDLINE="yes"
+  ( tty | grep ^/dev/tty >/dev/null ) && CMDLINE=""
+  ( tty | grep ^/dev/pts >/dev/null ) && CMDLINE=""
+  if [ "$CMDLINE" = "yes" ] ; then
+    RESULT=$($MOUNT/wrapper $@ 2>&1) || derror "$RESULT" 
+  else
+    $MOUNT/wrapper $@
+  fi
+
+  # kill all child processes
+  # kill $(pidof -x -o %PPID $!) # 2>/dev/null
+  
+  # unmount and clean up
+  umount $MOUNT
+  rm -f $MOUNT/image
+  rm -r $MOUNT/
+	
+	##################
+	# update klik menu
+	
+	CMGDIR=$(dirname $CMG)
+	[ x"$KDEHOME" = x ] && KDEHOME=$HOME/.kde
+
+	# find cmg files
+	CMGFILES=$(find $CMGDIR/*.cmg 2>/dev/null)
+	
+	# remove old menu entries
+	rm -rf ${KDEHOME}/share/applnk/klik/*.cmg.desktop
+	
+	# create new menu entries
+	for CMGFILE in $CMGFILES
+	do
+	BASENAME=$(basename "$CMGFILE")
+	APPNAME=$(echo $BASENAME | sed 's/.cmg//g' | cut -d _ -f 1)
+	firstchar=${APPNAME:0:1}   # First character.
+	restchar=${APPNAME:1}       # Rest of string(s).
+	firstchar=$(echo "$firstchar" | tr a-z A-Z)
+	APPNAME=$firstchar$restchar
+	cat > $KDEHOME/share/applnk/klik/$BASENAME.desktop <<EOF
+	[Desktop Entry]
+	Encoding=UTF-8
+	Type=Application
+	Exec=$HOME/.zAppRun $CMGFILE
+	Icon=
+	Name=$APPNAME
+EOF
+	done

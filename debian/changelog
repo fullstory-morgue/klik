@@ -1,3 +1,15 @@
+klik (0.6-2) unstable; urgency=low
+
+  * May be usable ... with a correct setup
+  * Resync back to standard klik client
+  * Fuse only mounting
+  * ssft dependency (instead of *dialog)
+  * klik-setup-* moved to /usr/share/doc/klik/setup
+  * programs now klik and zAppRun in /usr/bin/
+  * packaging simplified dropping all the root setup
+
+ -- Niall Walsh <niallwalsh@users.berlios.de>  Tue, 21 Feb 2006 13:11:47 +0000
+
 klik (0.6-1) unstable; urgency=low
 
   * NOT RELEASED
