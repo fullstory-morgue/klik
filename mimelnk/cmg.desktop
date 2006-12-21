@@ -1,0 +1,10 @@
+[Desktop Entry]
+Comment=
+Hidden=false
+Icon=view_remove
+MimeType=application/x-extension-cmg
+Patterns=*.cmg
+Type=MimeType
+ServiceTypes=ThumbCreator
+X-KDE-Library=cmg-thumbnail
+CacheThumbnail=false

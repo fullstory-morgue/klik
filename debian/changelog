@@ -1,8 +1,12 @@
 klik (0.6-3) ORPHANED; urgency=low
 
+  [ Stefan Lippers-Hollmann ]
   * ORPHANED
 
- -- Stefan Lippers-Hollmann <s.l-h@gmx.de>  Thu, 16 Nov 2006 15:42:19 +0100
+  [ Niall Walsh ]
+  * Reorganise primarily to do common setup where possible
+
+ -- Niall Walsh <niallwalsh@users.berlios.de>  Thu, 21 Dec 2006 14:27:32 +0000
 
 klik (0.6-2) unstable; urgency=low
 
