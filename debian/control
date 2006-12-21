@@ -2,13 +2,13 @@ Source: klik
 Section: web
 Priority: optional
 Maintainer: Niall Walsh <niallwalsh@users.berlios.de>
-Build-Depends-Indep: cdbs (>= 0.4.23-1.1), debhelper (>= 5.0.0)
+Build-Depends-Indep: cdbs (>= 0.4.23-1.1), debhelper (>= 5.0.0), docbook2x
 Standards-Version: 3.6.2
 
 Package: klik
 Architecture: all
 Depends: debconf
-Recommends: konqueror|mozilla-browser|mozilla-firefox|elinks,ssft (>=0.9.2),wget,fuse-utils,fusecram,fuseiso
+Recommends: konqueror|mozilla-browser|mozilla-firefox|elinks,ssft (>=0.9.2),wget,fuse-utils,fusecram,fuseiso, rpm, binutils
 Description: Web based software installer
  This package provides all the client programs needed to use the
  http://klik.atkon.de site to run software.
