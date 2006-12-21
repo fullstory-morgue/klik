@@ -1,3 +1,18 @@
 #!/usr/bin/make -f
-
 include /usr/share/cdbs/1/rules/debhelper.mk
+
+DEB_INSTALL_MANPAGES_klik = cmgrun.1 klik.1 cmg-gnome-thumbnailer.py.1
+
+build/klik::
+	docbook2x-man debian/man/cmgrun.1.docbook
+	docbook2x-man debian/man/cmg-gnome-thumbnailer.py.1.docbook
+	docbook2x-man debian/man/klik.1.docbook
+	docbook2x-man debian/man/cmdklik.1.docbook
+	docbook2x-man debian/man/kde-klik.1.docbook
+	docbook2x-man debian/man/gnome-klik.1.docbook
+install/klik::
+	dh_installmime
+	cp applnk/directory debian/klik/usr/share/applnk/klik/.directory
+	cp applications/cmgrun.desktop debian/klik/usr/share/applications/.cmgrun.desktop
+clean::
+	rm -f cmgrun.1 klik.1 cmg-gnome-thumbnailer.py.1 cmdklik.1 kde-klik.1 gnome-klik.1

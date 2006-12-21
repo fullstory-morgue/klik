@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+        <mime-type type="application/x-extension-cmg">
+                <comment>Klik cmg Application</comment>
+                <glob pattern="*.cmg"/>
+                <magic priority="50">
+                        <match value="Compressed" type="string" offset="16"/>
+                </magic>
+        </mime-type>
+</mime-info>
+

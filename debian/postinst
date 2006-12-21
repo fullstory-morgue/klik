@@ -9,7 +9,7 @@ case "$1" in
     configure)
 	
 	if [ -x `which gconf-schemas` ];then 
-		gconf-schemas --register /usr/share/gconf/schemas/cmg-gnome-thumbnail.schemas >/dev/null;
+		gconf-schemas --register /usr/share/gconf/schemas/klik-gnome-thumbnail.schemas >/dev/null;
 	fi
 	if [ -x `which update-binfmts`  ];then
 		update-binfmts --install cmg /usr/bin/cmgrun  --magic Compressed --offset 16 >/dev/null;

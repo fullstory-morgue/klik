@@ -5,7 +5,7 @@
 case "$1" in
 	   remove|deconfigure)
 		if [ -x `which gconf-schemas` ];then
-			gconf-schemas --unregister /usr/share/gconf/schemas/cmg-gnome-thumbnail.schemas >/dev/null
+			gconf-schemas --unregister /usr/share/gconf/schemas/klik-gnome-thumbnail.schemas >/dev/null
 		fi
 		if [ -x `which update-binfmts` ];then
 			update-binfmts --remove cmg /usr/bin/cmgrun >/dev/null
