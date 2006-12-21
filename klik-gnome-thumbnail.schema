@@ -18,7 +18,7 @@
             <applyto>/desktop/gnome/thumbnailers/application@x-extension-cmg/command</applyto>
             <owner>Thumbnailer</owner>
             <type>string</type>
-            <default>python $HOME/.cmg-gnome-thumbnailer.py %i %o</default>
+            <default>python /usr/bin/cmg-gnome-thumbnailer.py %i %o</default>
             <locale name="C">
                 <short>Create thumbnail for klik cmg</short>
                 <long>Create thumbnail for klik cmg</long>

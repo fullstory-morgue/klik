@@ -2,7 +2,7 @@
 # helper protocol for konqueror to send klicks to the klik script
 # by probono
 [Protocol]
-exec=klik '%u'
+exec=/usr/bin/klik '%u'
 protocol=klik
 input=none
 output=none

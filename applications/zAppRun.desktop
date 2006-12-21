@@ -2,7 +2,7 @@
 Encoding=UTF-8
 Name=zAppRun
 MimeType=application/x-extension-cmg;
-Exec='zAppRun'
+Exec='/usr/bin/zAppRun'
 Type=Application
 Terminal=false
 NoDisplay=true
