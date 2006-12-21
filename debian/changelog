@@ -2,8 +2,10 @@ klik (0.6-3) UNRELEASED; urgency=low
 
   [ Niall Walsh ]
   * Reorganise primarily to do common setup where possible
+  * Initial sync up to alexander_schier@yahoo.de ubuntu package sans fstab
+    prerm and postinst
 
- -- Niall Walsh <niallwalsh@users.berlios.de>  Thu, 21 Dec 2006 15:18:13 +0000
+ -- Niall Walsh <niallwalsh@users.berlios.de>  Thu, 21 Dec 2006 16:35:14 +0000
 
 klik (0.6-2) unstable; urgency=low
 

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" [
+]>
+<refentry>
+  <refentryinfo>
+    <author>
+      <firstname>Simon</firstname>
+      <surname>Peter</surname>
+      <email>probono@myrealbox.com</email>
+    </author>
+    <copyright>
+      <year>2005</year>
+      <holder>Jason Taylor</holder>
+    </copyright>
+    <date>2005-09-26</date>
+  </refentryinfo>
+  <refmeta>
+    <refentrytitle>cmg-gnome-thumbnailer.py</refentrytitle>
+    <manvolnum>1</manvolnum>
+  </refmeta>
+  <refnamediv>
+    <refname>cmg-gnome-thumbnailer.py</refname>
+    <refpurpose>extract the embedded thumbnail of a .cgm file</refpurpose>
+  </refnamediv>
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>cmg-gnome-thumbnailer.py</command>
+      <arg>.cmg file</arg>
+      <arg>output file (png)</arg>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+  <refsect1>
+    <title>DESCRIPTION</title>
+    <para>
+	  cmg-gnome-thumbnailer.py extracts a thumbnail from a .cmg file.
+    </para>
+  </refsect1>
+  <refsect1>
+    <title>COPYRIGHT</title>
+    <para>
+      This manual page was written by Alexander Schier
+      <email>alexander_schier@yahoo.de</email> for the
+      <productname>Debian</productname> system (but may be used by others).
+      Permission is granted to copy, distribute and/or modify this document
+      under the terms of the <acronym>GNU</acronym> General Public License,
+      Version 2 or any later version published by the Free Software Foundation.
+    </para>
+    <para>
+      On Debian systems, the complete text of the GNU General Public
+      License can be found in
+      <filename>/usr/share/common-licenses/GPL</filename>.
+    </para>
+  </refsect1>
+</refentry>
+
