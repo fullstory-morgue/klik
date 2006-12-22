@@ -1,7 +1,7 @@
 bin/klik			usr/bin/
 bin/zAppRun			usr/bin/
 doc/				usr/share/doc/klik/setup/
-services/klik-protocol		usr/share/services/
+services/klik.protocol		usr/share/services/
 applnk/klik.desktop		usr/share/applnk/klik/
 mimelnk/cmg.desktop		usr/share/mimelnk/application/
 services/cmg.desktop		usr/share/services/
