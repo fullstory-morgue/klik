@@ -43,6 +43,7 @@ esac
 if [ -n "$FUSE" ]
 then
   MOUNT=""
+  UMOUNT="fusermount -u"
   if [ -n "$FUSE" ]
   then
     SAFEFUSE="$FUSE"
@@ -89,7 +90,7 @@ fi
   # kill $(pidof -x -o %PPID $!) # 2>/dev/null
   
   # unmount and clean up
-  umount $MOUNT
+  $UMOUNT $MOUNT
   rm -f $MOUNT/image
   rm -r $MOUNT/
 	

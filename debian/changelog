@@ -7,8 +7,9 @@ klik (0.6-3) UNRELEASED; urgency=low
   * do a little rearranging for dh_installmime
   * add docboo2x to Build-deps and binutils and rpm to recommends
   * ensure zAppRun not cmgrun throughout
+  * make it fusermount properly
 
- -- Niall Walsh <niallwalsh@users.berlios.de>  Thu, 21 Dec 2006 21:31:52 +0000
+ -- Niall Walsh <Niall Walsh>  Fri, 29 Dec 2006 02:59:37 +0000
 
 klik (0.6-2) unstable; urgency=low
 
