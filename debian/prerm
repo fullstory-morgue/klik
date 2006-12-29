@@ -8,7 +8,7 @@ case "$1" in
 			gconf-schemas --unregister /usr/share/gconf/schemas/klik-gnome-thumbnail.schemas >/dev/null
 		fi
 		if [ -x `which update-binfmts` ];then
-			update-binfmts --remove cmg /usr/bin/zAppRun >/dev/null
+			update-binfmts --remove cmg /usr/bin/cmgrun >/dev/null
 		fi
 		;;
        upgrade)

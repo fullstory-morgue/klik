@@ -12,7 +12,7 @@ case "$1" in
 		gconf-schemas --register /usr/share/gconf/schemas/klik-gnome-thumbnail.schemas >/dev/null;
 	fi
 	if [ -x `which update-binfmts`  ];then
-		update-binfmts --install cmg /usr/bin/zAppRun  --magic Compressed --offset 16 >/dev/null;
+		update-binfmts --install cmg /usr/bin/cmgrun  --magic Compressed --offset 16 >/dev/null;
 	fi
     ;;
 

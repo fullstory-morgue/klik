@@ -4,12 +4,12 @@
 
 # how to make $HOME variable here?
 mkdir -p $HOME/.local/share/applications/
-cat > $HOME/.local/share/applications/zAppRun.desktop << EOF
+cat > $HOME/.local/share/applications/cmgrun.desktop << EOF
 [Desktop Entry]
 Encoding=UTF-8
-Name=zAppRun
+Name=cmgrun
 MimeType=application/x-extension-cmg;
-Exec='zAppRun'
+Exec='cmgrun'
 Type=Application
 Terminal=false
 NoDisplay=true

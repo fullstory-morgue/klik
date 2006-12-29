@@ -5,11 +5,10 @@ klik (0.6-3) UNRELEASED; urgency=low
   * Initial sync up to alexander_schier@yahoo.de ubuntu package sans fstab
     prerm and postinst
   * do a little rearranging for dh_installmime
-  * add docboo2x to Build-deps and binutils and rpm to recommends
-  * ensure zAppRun not cmgrun throughout
+  * add docboo2x to Build-deps and iceweasel, binutils, binfmt-support and rpm to recommends
   * make it fusermount properly
 
- -- Niall Walsh <Niall Walsh>  Fri, 29 Dec 2006 02:59:37 +0000
+ -- Niall Walsh <niall@ammd64>  Fri, 29 Dec 2006 18:57:16 +0000
 
 klik (0.6-2) unstable; urgency=low
 

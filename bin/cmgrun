@@ -8,7 +8,7 @@
 [ -n "$SSFT_FRONTEND" ] || SSFT_FRONTEND="$( ssft_choose_frontend )"
 
 derror(){
- ssft_display_error "klik zAppRun Error" "$1"
+ ssft_display_error "cmgrun Error" "$1"
 }
 
 # rewrite cmdline to use absolute instead of relative paths, thanks bfree
@@ -119,7 +119,7 @@ fi
 	[Desktop Entry]
 	Encoding=UTF-8
 	Type=Application
-	Exec=$HOME/.zAppRun $CMGFILE
+	Exec=/usr/bin/cmgrun $CMGFILE
 	Icon=
 	Name=$APPNAME
 EOF

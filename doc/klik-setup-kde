@@ -91,7 +91,7 @@ mkdir -p ${KDEHOME}/share/applnk/.hidden
 cat > ${KDEHOME}/share/applnk/.hidden/AppRun.desktop<<\EOF
 [Desktop Entry]
 Comment=
-Exec=zAppRun %U
+Exec=cmgrun %U
 Icon=view_remove
 InitialPreference=2
 MimeType=application/x-extension-cmg;Application

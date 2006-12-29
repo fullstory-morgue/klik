@@ -1,6 +1,6 @@
 [Desktop Entry]
 Comment=
-Exec=/usr/bin/zAppRun %U
+Exec=/usr/bin/cmgrun %U
 Icon=view_remove
 InitialPreference=2
 MimeType=application/x-extension-cmg;Application

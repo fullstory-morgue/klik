@@ -1,10 +1,10 @@
 bin/klik			usr/bin/
-bin/zAppRun			usr/bin/
+bin/cmgrun			usr/bin/
 doc/				usr/share/doc/klik/setup/
 services/klik.protocol		usr/share/services/
 applnk/klik.desktop		usr/share/applnk/klik/
 mimelnk/cmg.desktop		usr/share/mimelnk/application/
 services/cmg.desktop		usr/share/services/
-applnk/AppRun.desktop		usr/share/applnk/.hidden/
+applnk/cmgrun.desktop		usr/share/applnk/.hidden/
 bin/cmg-gnome-thumbnailer.py	usr/bin/
 klik-gnome-thumbnail.schema	usr/share/gconf/schemas/

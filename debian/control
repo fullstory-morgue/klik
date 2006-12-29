@@ -8,7 +8,7 @@ Standards-Version: 3.6.2
 Package: klik
 Architecture: all
 Depends: debconf
-Recommends: konqueror|mozilla-browser|mozilla-firefox|elinks,ssft (>=0.9.2),wget,fuse-utils,fusecram,fuseiso, rpm, binutils
+Recommends: konqueror|iceweasel|mozilla-browser|mozilla-firefox|elinks,ssft (>=0.9.2),wget,fuse-utils,fusecram,fuseiso, rpm, binutils, binfmt-support
 Description: Web based software installer
  This package provides all the client programs needed to use the
  http://klik.atkon.de site to run software.
