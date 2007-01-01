@@ -5,7 +5,7 @@ klik (0.6.3) unstable; urgency=low
   * Initial sync up to alexander_schier@yahoo.de ubuntu package sans fstab
     prerm and postinst
   * do a little rearranging for dh_installmime
-  * add docboo2x to Build-deps and iceweasel, binutils, binfmt-support and 
+  * add docboo2x to Build-deps and iceweasel, binutils, binfmt-support and
     rpm to recommends
   * make it fusermount properly
   * Make Recommends Depends (bar a browser)
@@ -14,8 +14,10 @@ klik (0.6.3) unstable; urgency=low
   * depend on procps
   * bump standards version to 3.7.2.
   * debian/control cosmetics.
+  * fix dependencies.
+  * fix build dependencies.
 
- -- Niall Walsh <niallwalsh@users.berlios.de>  Mon,  1 Jan 2007 17:32:31 +0000
+ -- Stefan Lippers-Hollmann <s.l-h@gmx.de>  Mon,  1 Jan 2007 19:29:39 +0100
 
 klik (0.6-2) unstable; urgency=low
 

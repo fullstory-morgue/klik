@@ -2,12 +2,12 @@ Source: klik
 Section: web
 Priority: optional
 Maintainer: Niall Walsh <niallwalsh@users.berlios.de>
-Build-Depends-Indep: cdbs, debhelper (>= 5), docbook2x
+Build-Depends: cdbs, debhelper (>= 5), docbook2x
 Standards-Version: 3.7.2
 
 Package: klik
 Architecture: all
-Depends: debconf,procps,wget,dialog,ssft,fuse-utils,fusecram,fuseiso,rpm,binutils,binfmt-support
+Depends: debconf, procps, wget, dialog, ssft, fuse-utils, fusecram, fuseiso, gconf2 (>= 2.10.1-2), rpm, binutils, binfmt-support
 Recommends: konqueror|iceweasel|mozilla-browser|mozilla-firefox|elinks
 Description: Web based software installer
  This package provides all the client programs needed to use the
