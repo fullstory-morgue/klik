@@ -1,4 +1,4 @@
-klik (0.6-3) UNRELEASED; urgency=low
+klik (0.6.3) unstable; urgency=low
 
   [ Niall Walsh ]
   * Reorganise primarily to do common setup where possible
