@@ -11,5 +11,5 @@ Depends: debconf, procps, wget, dialog, ssft, fuse-utils, fusecram, fuseiso, gco
 Suggests: konqueror|iceweasel|mozilla-browser|mozilla-firefox|elinks
 Description: Web based software installer
  This package provides all the client programs needed to use the
- http://klik.atkon.de site to run software.
+ http://klik.atekon.de site to run software.
 

@@ -1,8 +1,12 @@
 klik (0.6.5) UNRELEASED; urgency=low
 
+  [ Stefan Lippers-Hollmann ]
   * NOT RELEASED YET
 
- -- Stefan Lippers-Hollmann <s.l-h@gmx.de>  Mon, 06 Aug 2007 01:22:37 +0200
+  [ Niall Walsh ]
+  * Update description to fix url typo (thanks Stefan Roediger)
+
+ -- Niall Walsh <niallwalsh@users.berlios.de>  Tue, 21 Aug 2007 00:13:08 +0100
 
 klik (0.6.4) unstable; urgency=low
 
