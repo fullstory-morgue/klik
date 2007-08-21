@@ -1,8 +1,9 @@
-klik (0.6.6) UNRELEASED; urgency=low
+klik (0.6.6) unstable; urgency=low
 
-  * NOT RELEASED YET
+  * don't call dh_installmime twice.
+  * rename to *.schemas and fix gconf-schemas call.
 
- -- Stefan Lippers-Hollmann <s.l-h@gmx.de>  Tue, 21 Aug 2007 01:31:01 +0200
+ -- Stefan Lippers-Hollmann <s.l-h@gmx.de>  Tue, 21 Aug 2007 15:36:30 +0200
 
 klik (0.6.5) unstable; urgency=low
 

@@ -7,4 +7,4 @@ mimelnk/cmg.desktop		usr/share/mimelnk/application/
 services/cmg.desktop		usr/share/services/
 applnk/cmgrun.desktop		usr/share/applnk/.hidden/
 bin/cmg-gnome-thumbnailer.py	usr/bin/
-klik-gnome-thumbnail.schema	usr/share/gconf/schemas/
+klik-gnome-thumbnail.schemas	usr/share/gconf/schemas/
