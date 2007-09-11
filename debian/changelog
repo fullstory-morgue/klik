@@ -1,8 +1,9 @@
 klik (0.6.7) UNRELEASED; urgency=low
 
   * NOT RELEASED YET
+  * add VCS control headers.
 
- -- Stefan Lippers-Hollmann <s.l-h@gmx.de>  Tue, 21 Aug 2007 15:38:46 +0200
+ -- Stefan Lippers-Hollmann <s.l-h@gmx.de>  Tue, 11 Sep 2007 20:17:41 +0200
 
 klik (0.6.6) unstable; urgency=low
 
