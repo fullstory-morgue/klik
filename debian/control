@@ -3,7 +3,7 @@ Section: web
 Priority: optional
 Maintainer: Niall Walsh <niallwalsh@users.berlios.de>
 Build-Depends: cdbs, debhelper (>= 5), docbook2x
-Standards-Version: 3.7.2
+Standards-Version: 3.7.3
 Vcs-Svn: svn://svn.berlios.de/fullstory/klik/trunk
 Vcs-Browser: http://svn.berlios.de/wsvn/fullstory/klik/trunk/
 
