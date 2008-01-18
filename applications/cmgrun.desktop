@@ -2,7 +2,7 @@
 Encoding=UTF-8
 Name=cmgrun
 MimeType=application/x-extension-cmg;
-Exec='/usr/bin/cmgrun'
+Exec=/usr/bin/cmgrun
 Type=Application
 Terminal=false
 NoDisplay=true
