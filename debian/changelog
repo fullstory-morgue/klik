@@ -1,8 +1,8 @@
-klik (0.6.11) UNRELEASED; urgency=low
+klik (0.6.11) unstable; urgency=low
 
-  * NOT RELEASED YET
+  * appease lintian and write (C) as © in debian/copyright.
 
- -- Stefan Lippers-Hollmann <s.l-h@gmx.de>  Sat, 19 Jan 2008 00:24:44 +0100
+ -- Stefan Lippers-Hollmann <s.l-h@gmx.de>  Wed, 20 Feb 2008 23:26:01 +0100
 
 klik (0.6.10) unstable; urgency=low
 
@@ -89,8 +89,6 @@ klik (0.6-2) unstable; urgency=low
 
 klik (0.6-1) unstable; urgency=low
 
-  * NOT RELEASED
-  * PLEASE READ and/or TEST ONLY, DO NOT DEPLOY!
   * Use KDEHOME instead of $HOME/.kde if present
   * Report /etc/*-release if no /etc/*-version (suse anyway)
   * Split into more files (may revert)
