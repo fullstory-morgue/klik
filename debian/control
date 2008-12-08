@@ -2,16 +2,29 @@ Source: klik
 Section: web
 Priority: optional
 Maintainer: Niall Walsh <niallwalsh@users.berlios.de>
-Build-Depends: cdbs, debhelper (>= 6), docbook2x
+Build-Depends: cdbs,
+               debhelper (>= 6),
+               docbook2x
 Standards-Version: 3.7.3
 Vcs-Svn: svn://svn.berlios.de/fullstory/klik/trunk
 Vcs-Browser: http://svn.berlios.de/wsvn/fullstory/klik/trunk/
 
 Package: klik
 Architecture: all
-Depends: debconf, procps, wget, dialog, ssft, fuse-utils, fusecram, fuseiso, gconf2 (>= 2.10.1-2), rpm, binutils, binfmt-support
-Suggests: konqueror|iceweasel|mozilla-browser|mozilla-firefox|elinks
+Depends: ${misc:Depends},
+         debconf,
+         procps,
+         wget,
+         dialog,
+         ssft,
+         fuse-utils,
+         fusecram,
+         fuseiso,
+         gconf2 (>= 2.10.1-2),
+         rpm,
+         binutils,
+         binfmt-support
+Suggests: konqueror | iceweasel | mozilla-browser | mozilla-firefox | elinks
 Description: Web based software installer
  This package provides all the client programs needed to use the
  http://klik.atekon.de site to run software.
-
