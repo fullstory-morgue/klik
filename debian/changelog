@@ -1,3 +1,9 @@
+klik (0.6.13) UNRELEASED; urgency=low
+
+  * NOT RELEASED YET
+
+ -- Stefan Lippers-Hollmann <s.l-h@gmx.de>  Mon, 08 Dec 2008 22:49:06 +0100
+
 klik (0.6.12) unstable; urgency=low
 
   * make lintian happy and depend on ${misc:Depends}.
