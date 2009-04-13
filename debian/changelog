@@ -1,8 +1,9 @@
-klik (0.6.13) UNRELEASED; urgency=low
+klik (0.6.13) ORPHANED; urgency=low
 
   * NOT RELEASED YET
+  * ORPHAN PACKAGE
 
- -- Stefan Lippers-Hollmann <s.l-h@gmx.de>  Mon, 08 Dec 2008 22:49:06 +0100
+ -- Stefan Lippers-Hollmann <s.l-h@gmx.de>  Mon, 13 Apr 2009 13:18:43 +0200
 
 klik (0.6.12) unstable; urgency=low
 
